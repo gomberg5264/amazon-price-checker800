@@ -1,0 +1,65 @@
+<ion-header *ngIf="!isLoading">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isLoading? 'Loading' : singleItem.name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-progress-bar type="indeterminate" *ngIf="isDeleting"></ion-progress-bar>
+<ion-content *ngIf="!isLoading">
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="12" offset-md="0" text-center *ngIf="isLoading">
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+      <ion-col size-md="12" offset-md="0" *ngIf="!isLoading && !singleItem" text-center>
+        <p>Item Not Found.</p>
+      </ion-col>
+      <ion-col size-md="12" offset-md="0" text-center>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>
+              <a href="{{singleItem.link}}">Open Item on Amazon</a>
+            </ion-card-subtitle>
+            <ion-card-title>{{singleItem.name}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-img [src]="singleItem.imgUrl"></ion-img>
+            <ion-item>
+              <h2>Current Price: £{{singleItem.price}}</h2>
+              <h2>Target Price: £{{singleItem.targetPrice}}</h2>
+              <h2>Added to tracker: {{singleItem.created_date | date}}</h2>
+              <div *ngIf="singleItem.pastPrices.length > 0">
+                <h2>Lowest Tracked Price:</h2>
+                <p>Price: £{{lowestPrice}}</p>
+              </div>
+            </ion-item>
+            <ion-item>
+              <ion-label>Following?</ion-label>
+              <ion-checkbox [checked]="singleItem.following" [(ngModel)]="singleItem.following" (ionChange)="updateFollowingStatus($event)"></ion-checkbox>
+            </ion-item>
+            <ion-row>
+              <ion-col size-md="6" offset-md="3" text-center>
+                <ion-button shape="round" color="danger" (click)="removeItem(singleItem)">Remove Item</ion-button>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size-md="12" offset-md="0">
+                <h2>Past Prices:</h2>
+                <ion-list>
+                  <ion-item *ngFor="let item of singleItem.pastPrices" class="single-item">
+                    <ion-label>
+                      <h5>{{ item.date | date }}</h5>
+                      <p>Price: £{{ item.price }}</p>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3" text-center>
+        <h1>Amazon Price Tracker</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3" text-center>
+        <ion-button shape="round" color="primary" (click)="addNewItemLink()">Add a new item</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="12" offset-md="0" text-center *ngIf="isLoading">
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+      <ion-col size-md="12" offset-md="0" *ngIf="!isLoading && loadedItems && loadedItems.length > 0" text-center>
+        <h1>All Items</h1>
+        <ion-list>
+          <ion-item *ngFor="let item of loadedItems" (click)="goToItemPage(item)" class="single-item">
+            <ion-thumbnail slot="start">
+              <ion-img [src]="item.imgUrl"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h5>{{ item.name }}</h5>
+              <p>Price: £{{ item.price }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
